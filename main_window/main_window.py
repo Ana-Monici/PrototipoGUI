@@ -122,8 +122,8 @@ class SSLPanel(QWidget):
         # Creates the timer that refreshes interface components periodically
         self.startTimer(math.ceil(100 / 3))
 
-        # Creates the timer that refreshes interface components periodically
-        self.startTimer(math.ceil(100 / 3))
+        # Initializes the match object for field rendering
+        self.field_vis.setupSSL()
 
     def timerEvent(self, event: typing.Optional['QTimerEvent']) -> None:
         for component in self.updatable_components:
