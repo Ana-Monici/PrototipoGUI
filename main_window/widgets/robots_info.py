@@ -4,7 +4,7 @@ robot's informations will be displayed.
 """
 
 import os
-from PyQt6.QtWidgets import QLabel, QWidget, QGridLayout, QVBoxLayout, QFrame
+from PyQt6.QtWidgets import QLabel, QWidget, QGridLayout, QVBoxLayout, QFrame, QScrollArea
 from PyQt6.QtGui import QPalette, QColor, QFont, QPixmap
 from PyQt6.QtCore import Qt
 from entities import Match, Robot
@@ -132,14 +132,9 @@ class RobotFrame(QFrame):
             self.lbl_battery.setText("Bateria:" + str(self.battery) + "%<br/>" + "Sinal:"+ str(self.signal) + "dBm")
             self.title.setText("Robô "+str(self.id))
 
-class RobotsInfo(QWidget):
+class RobotsGrid(QWidget):
     def __init__(self, context: Match):
-        super(RobotsInfo, self).__init__()
-        self.setAutoFillBackground(True)
-        palette = self.palette()
-        palette.setColor(QPalette.ColorRole.Window, QColor('#D7C3F1'))
-        self.setPalette(palette)
-
+        super().__init__()
         self.context = context
 
         # Creating table of informations
@@ -177,12 +172,12 @@ class RobotsInfo(QWidget):
         self.widget_ids.append((self.robot_frames[4].id, 1, 1))
         self.grid.addWidget(self.robot_frames[5], 2, 1)
         self.show_ids.append(self.robot_frames[5].id)
-        self.widget_ids.append((self.robot_frames[5].id, 1, 2))        
+        self.widget_ids.append((self.robot_frames[5].id, 1, 2))
 
         self.setLayout(self.grid)
-
-    def update_info(self, status: Match):
-        for robot in status.robots:
+    
+    def update_info(self, context: Match):
+        for robot in context.robots:
             if robot.playing == True and robot.robot_id not in self.show_ids:
                 self.show_ids.pop(0)
                 self.show_ids.append(robot.robot_id)
@@ -199,6 +194,24 @@ class RobotsInfo(QWidget):
 
             if robot.id not in self.show_ids:
                 robot.setParent(None)
-            robot_info = status.fetch_robot_by_id(robot.team, robot.id)
+            robot_info = context.fetch_robot_by_id(robot.team, robot.id)
             if robot_info is not None:
                 robot.update_info()
+
+class RobotsInfo(QScrollArea):
+    def __init__(self, context: Match):
+        super(RobotsInfo, self).__init__()
+        self.setAutoFillBackground(True)
+        palette = self.palette()
+        palette.setColor(QPalette.ColorRole.Window, QColor('#D7C3F1'))
+        self.setPalette(palette)
+        self.setMinimumWidth(200)
+        self.setMaximumWidth(400)
+
+        self.robots_grid = RobotsGrid(context)
+
+        # scroll_area = QScrollArea()
+        self.setWidgetResizable(True)  # Faz com que o conteúdo se adapte ao tamanho
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.setWidget(self.robots_grid)

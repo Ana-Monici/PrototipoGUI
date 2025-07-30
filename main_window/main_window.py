@@ -73,12 +73,19 @@ class SSLPanel(QWidget):
         # robot informations, game informations and fouls
         bottom_h_layout = QHBoxLayout()
         self.field_vis = FieldView(self.context)
-        bottom_h_layout.addWidget(self.field_vis, stretch=1)
+        bottom_h_layout.addWidget(self.field_vis, stretch=10)
 
         # GUI mode and NeonFC informations displayed
         # in a grid (10 rows, 6 columns)
+        # TODO place robots_info section in bottom_h_layout
         grid = QGridLayout()
         grid.setContentsMargins(0,0,0,0)
+        grid.setColumnStretch(0, 10)
+        grid.setColumnStretch(1, 1)
+        grid.setColumnStretch(2, 0)
+        grid.setColumnStretch(3, 8)
+        grid.setColumnStretch(4, 1)
+        grid.setColumnStretch(5, 0)
 
         # Widget to select goalkeeper by robot_id
         # self.gk_widget = GoalkeeperID(self.context, self.log_widget)
@@ -87,7 +94,7 @@ class SSLPanel(QWidget):
         # grid.addWidget(self.gk_widget, 0, 3, 1, 3) # starts at row:0, column:3, spans 1 row, spans 3 columns
 
         # Widget to choose game mode
-        self.mode_widget = GameMode(self.context, self.log_widget)
+        self.mode_widget = GUIMode(self.context, self.log_widget)
         grid.addWidget(self.mode_widget, 0, 3, 1, 3) # starts at row:0, column:3, spans 1 row, spans 3 columns
 
         # NeonFC's informations
@@ -101,13 +108,13 @@ class SSLPanel(QWidget):
         # Robots' informations section
         self.robots_widget = RobotsInfo(self.context)
         grid.addWidget(self.robots_widget, 0, 0, 10, 3)
-        self.updatable_components.append(self.robots_widget)
+        self.updatable_components.append(self.robots_widget.robots_grid)
 
         # Adding grid on a widget for better control of its alignment
         grid_widget = QWidget()
         grid_widget.setLayout(grid)
 
-        bottom_h_layout.addWidget(grid_widget, alignment=Qt.AlignmentFlag.AlignRight)
+        bottom_h_layout.addWidget(grid_widget, alignment=Qt.AlignmentFlag.AlignRight, stretch=7)
         window_layout.addLayout(bottom_h_layout)
 
         self.setLayout(window_layout)
