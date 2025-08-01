@@ -1,0 +1,25 @@
+{
+  "objects": [
+    {
+      "shader": {
+        "vertex": "field_graphics/assets/shaders/VertexShader.vsh",
+        "fragment": "field_graphics/assets/shaders/CircleFragmentShader.fsh",
+        "uniforms": [
+          {
+            "type": "float",
+            "name": "radius",
+            "v0": 3.25
+          }
+        ]
+      },
+      "vertices": [
+        {"x": -3.25,"y": -3.25,"z": -0,"r": 1,"g": 0.3,"b": 0.3},
+        {"x": -3.25,"y": 3.25,"z": -0,"r": 1,"g": 0.3,"b": 0.3},
+        {"x": 3.25,"y": 3.25,"z": -0,"r": 1,"g": 0.3,"b": 0.3},
+        {"x": 3.25,"y": -3.25,"z": -0,"r": 1,"g": 0.3,"b": 0.3},
+        {"x": 3.25,"y": 3.25,"z": -0,"r": 1,"g": 0.3,"b": 0.3},
+        {"x": -3.25,"y": -3.25,"z": -0,"r": 1,"g": 0.3,"b": 0.3}
+      ]
+    }
+  ]
+}
